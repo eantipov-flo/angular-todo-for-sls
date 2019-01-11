@@ -3,10 +3,12 @@
 html, body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
 app-root {
   display: flex;
   align-items: center;
@@ -15,7 +17,8 @@ app-root {
   width: 700px;
   margin: 0 25% 0 25%;
 }
-app-todo-list{
+
+app-todo-list {
   display: flex;
   align-items: center;
   flex-flow: column;

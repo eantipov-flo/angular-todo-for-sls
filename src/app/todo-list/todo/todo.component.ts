@@ -1,11 +1,11 @@
-import {Component, EventEmitter, OnInit, Output, Input, ViewChild, ElementRef, AfterViewChecked} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 
-import {Todo} from '../../todo';
+import { Todo } from '../../todo';
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
-  styleUrls: ['./todo.component.css']
+  styleUrls: ['./todo.component.css'],
 })
 export class TodoComponent implements OnInit, AfterViewChecked {
 
