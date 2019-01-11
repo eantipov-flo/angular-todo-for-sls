@@ -1,17 +1,17 @@
 <form [formGroup]="addForm" (ngSubmit)="createTodo()">
-  <input type="text" formControlName="task">
-  <button type="submit">add</button>
-</form><br>
-<button mat-stroked-button (click)="changeStatus()">Change status all</button>
-<button mat-stroked-button color="warn" (click)="deleteAll()">Delete all</button>
-<button mat-stroked-button color="warn" (click)="deleteCompleted()">Delete completed</button><br>
-<br>
+  <input class="add-input" type="text" formControlName="task">
+  <button class="add-button" type="submit">+</button>
+</form>
+<div class="buttons-delete">
+  <button mat-stroked-button (click)="changeStatus()">Change status all</button>
+  <button mat-stroked-button color="warn" (click)="deleteAll()">Delete all</button>
+  <button mat-stroked-button color="warn" (click)="deleteCompleted()">Delete completed</button>
+</div>
 <mat-button-toggle-group>
   <mat-button-toggle (change)="showList(1)">All Todos</mat-button-toggle>
   <mat-button-toggle (change)="showList(2)">Active Todos</mat-button-toggle>
   <mat-button-toggle (change)="showList(3)">Completed Todos</mat-button-toggle>
 </mat-button-toggle-group>
-<br>
 <app-todo *ngFor="let todo of todoList$ | async" [todo]="todo" (editTodo)="editTodo($event)"
           (deleteTodo)="deleteTodo($event)"></app-todo>
 <p>

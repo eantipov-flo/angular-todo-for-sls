@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Todo } from './todo';
 import { Observable, Subject } from 'rxjs';
@@ -26,43 +26,48 @@ export class TodoDataService {
     this.subjectPagination$ = this.subjectPagination.asObservable();
   }
 
-  public createTodo(task: string): Observable<string> {
-    return this.http.post<string>(`${this.urlHost}/todos/create`, { task: task });
+  public createTodo(task: string): Observable<any> {
+    return this.http.post<any>(`${this.urlHost}/todos/create`, { task: task });
   }
 
   public getTodo(): void {
     this.http.get<Todo[]>(`${this.urlHost}/todos/get`)
       .subscribe(data => {
         this.todoArr = data;
+        this.todoArr.sort((a, b) => {
+          const millisecondsA = Date.parse(a.createdAt);
+          const millisecondsB = Date.parse(b.createdAt);
+          if (millisecondsA > millisecondsB) {
+            return 1;
+          }
+          if (millisecondsA < millisecondsB) {
+            return -1;
+          }
+          return 0;
+        });
         this.subjectArr.next(this.todoArr);
       });
   }
 
-  public editTodo(todoEmit: Todo): Observable<string> {
-    return this.http.put<string>(`${this.urlHost}/todos/update`, todoEmit);
+  public editTodo(todoEmit: Todo): Observable<any> {
+    return this.http.put<any>(`${this.urlHost}/todos/update`, todoEmit);
   }
 
   public changeStatus(): Observable<string> {
     return this.http.put<any>(`${this.urlHost}/todos/updateStatus`, this.filterArr());
   }
 
-  public deleteSingle(idTodo: number): Observable<string> {
-    return this.http.delete<string>(`${this.urlHost}/todos/delete/${idTodo}`);
+  public deleteSingle(idTodo: number): Observable<any> {
+    return this.http.delete<any>(`${this.urlHost}/todos/delete/${idTodo}`);
   }
 
   public deleteAll(): Observable<string> {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: this.todoArr,
-    };
-    return this.http.delete<string>(`${this.urlHost}/todos/delete/all`, httpOptions);
+    return this.http.request<string>('delete', `${this.urlHost}/todos/delete/completed`, { body: this.todoArr });
   }
 
-  public deleteCompleted(): Observable<string> {
+  public deleteCompleted(): Observable<any> {
     const requestArray = this.todoArr.filter(item => item.status === true);
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: requestArray,
-    };
-    return this.http.delete<string>(`${this.urlHost}/todos/delete/completed`, httpOptions);
+    return this.http.request<any>('delete', `${this.urlHost}/todos/delete/completed`, { body: requestArray });
   }
 
   public showList(currentList: number, currentPage: number): void {

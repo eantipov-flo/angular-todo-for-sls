@@ -1,3 +1,37 @@
 .mat-button-toggle-label-content .pagButtons {
   line-height: 36px;
 }
+.mat-stroked-button {
+  padding: 0 13px;
+}
+
+.add-input {
+  width: 354px;
+  /* height: 44%; */
+  font-size: 1.3em;
+  font-family: "Trebuchet MS", "Lucida Sans";
+  outline: none;
+}
+
+.add-button {
+  position: absolute;
+  right: 38.5%;
+  top: 81px;
+  border: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  outline: none;
+  text-align: center;
+  /* font-weight: bold; */
+  padding: 2px;
+  font-size: 1.2em;
+}
+.buttons-delete{
+  margin-bottom: 1%;
+}
+mat-button-toggle-group{
+  margin-bottom: 1%;
+}
+
+

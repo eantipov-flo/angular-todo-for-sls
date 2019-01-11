@@ -9,8 +9,14 @@ body {
 }
 app-root {
   display: flex;
-  /*align-items: center;*/
-  /*justify-content: center;*/
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   width: 700px;
   margin: 0 25% 0 25%;
+}
+app-todo-list{
+  display: flex;
+  align-items: center;
+  flex-flow: column;
 }
