@@ -45,19 +45,22 @@ export class TodoListComponent implements OnInit, DoCheck {
     if (!this.addForm.value.task.trim()) {
       return;
     }
-    this.dataService.createTodo(this.addForm.value.task).subscribe(data => {
-      this.dataService.getTodo();
-      this.message = data['message'];
-    });
+    this.dataService.createTodo(this.addForm.value.task).subscribe(
+      data => {
+        this.dataService.todoArr.push(data['todo']);
+        this.dataService.subjectArr.next(this.dataService.todoArr);
+        this.message = data['message'];
+      },
+    error => this.message = error
+  );
     this.addForm.patchValue({ task: '' });
   }
 
 
   public editTodo(todo: Todo): void {
     this.dataService.editTodo(todo).subscribe(data => {
-
-      this.dataService.getTodo();
       this.message = data['message'];
+
     });
   }
 

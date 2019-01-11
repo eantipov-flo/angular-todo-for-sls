@@ -9,13 +9,13 @@ import { Observable, Subject } from 'rxjs';
 })
 export class TodoDataService {
 
-  public todoArr: Todo[];
+  public todoArr: Todo[] = [];
 
   public subjectArr = new Subject<Todo[]>();
-  public subjectArr$ = new Observable<Todo[]>();
+  public subjectArr$: Observable<Todo[]>;
 
   public subjectPagination = new Subject<number[]>();
-  public subjectPagination$ = new Observable<number[]>();
+  public subjectPagination$: Observable<number[]>;
   private todosOnPage = 10;
   private urlHost = 'http://localhost:3000';
 
