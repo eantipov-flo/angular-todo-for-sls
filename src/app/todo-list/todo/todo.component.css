@@ -21,3 +21,9 @@
   /* font-weight: bold; */
   padding: 2px;
 }
+
+.edit-todo {
+  outline: none;
+  width: 280px;
+  text-align: center;
+}

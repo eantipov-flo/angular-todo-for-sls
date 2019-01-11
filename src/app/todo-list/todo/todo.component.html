@@ -1,6 +1,7 @@
 <div class="todo">
   <input type="checkbox" [checked]="todo.status===true" (change)="changeStatusTodo()">
   <label *ngIf="displayEdit" (click)="showEdit()">{{todo.task}}</label>
-  <input #editInput type="text" *ngIf="!displayEdit" (blur)="editTaskTodo(true, editInput.value)" [value]="todo.task">
+  <input class="edit-todo" #editInput type="text" *ngIf="!displayEdit" (blur)="editTaskTodo(true, editInput.value)"
+         [value]="todo.task">
   <button class="del-button" (click)="delTodo(todo.id)">X</button>
 </div>

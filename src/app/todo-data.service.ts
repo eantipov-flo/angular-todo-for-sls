@@ -16,7 +16,7 @@ export class TodoDataService {
 
   public subjectPagination = new Subject<number[]>();
   public subjectPagination$: Observable<number[]>;
-  private todosOnPage = 10;
+  private todosOnPage = 7;
   private urlHost = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {
