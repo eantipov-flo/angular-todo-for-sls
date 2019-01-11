@@ -48,11 +48,11 @@ export class TodoDataService {
     if (arrFilter.length === this.todoArr.length) {
       requestArray.forEach(item => item.status = false);
       console.log(requestArray);
-      return this.http.put<any>(`${this.urlHost}/todos/updateStatus`, requestArray );
+      return this.http.put<any>(`${this.urlHost}/todos/updateStatus`, requestArray);
     } else {
       requestArray.forEach(item => item.status = true);
       console.log(requestArray);
-      return this.http.put<any>(`${this.urlHost}/todos/updateStatus`,  requestArray );
+      return this.http.put<any>(`${this.urlHost}/todos/updateStatus`, requestArray);
     }
   }
 
@@ -62,7 +62,7 @@ export class TodoDataService {
 
   public deleteAll(): Observable<string> {
     const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: this.todoArr
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: this.todoArr,
     };
     return this.http.delete<string>(`${this.urlHost}/todos/delete/all`, httpOptions);
   }
@@ -70,7 +70,7 @@ export class TodoDataService {
   public deleteCompleted(): Observable<string> {
     const requestArray = this.todoArr.filter(item => item.status === true);
     const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: requestArray
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: requestArray,
     };
     return this.http.delete<string>(`${this.urlHost}/todos/delete/completed`, httpOptions);
   }

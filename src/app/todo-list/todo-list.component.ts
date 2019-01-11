@@ -47,7 +47,7 @@ export class TodoListComponent implements OnInit, DoCheck {
     }
     this.dataService.createTodo(this.addForm.value.task).subscribe(data => {
       this.dataService.getTodo();
-      this.message = data;
+      this.message = data['message'];
     });
     this.addForm.patchValue({ task: '' });
   }
@@ -55,13 +55,15 @@ export class TodoListComponent implements OnInit, DoCheck {
 
   public editTodo(todo: Todo): void {
     this.dataService.editTodo(todo).subscribe(data => {
+
       this.dataService.getTodo();
-      this.message = data;
+      this.message = data['message'];
     });
   }
 
   public deleteTodo(id: number): void {
     this.dataService.deleteSingle(id).subscribe(data => {
+      console.log(data);
       this.dataService.getTodo();
       this.message = data['message'];
     });
@@ -70,21 +72,21 @@ export class TodoListComponent implements OnInit, DoCheck {
   public deleteAll(): void {
     this.dataService.deleteAll().subscribe(data => {
       this.dataService.getTodo();
-      this.message = data;
+      this.message = data['message'];
     });
   }
 
   public changeStatus(): void {
     this.dataService.changeStatus().subscribe(data => {
       this.dataService.getTodo();
-      this.message = data;
+      this.message = data['message'];
     });
   }
 
   public deleteCompleted(): void {
     this.dataService.deleteCompleted().subscribe(data => {
       this.dataService.getTodo();
-      this.message = data;
+      this.message = data['message'];
     });
   }
 
