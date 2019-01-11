@@ -8,7 +8,6 @@
 
 .add-input {
   width: 354px;
-  /* height: 44%; */
   font-size: 1.3em;
   font-family: "Trebuchet MS", "Lucida Sans";
   outline: none;
@@ -24,7 +23,6 @@
   border-radius: 100%;
   outline: none;
   text-align: center;
-  /* font-weight: bold; */
   padding: 2px;
   font-size: 1.2em;
 }

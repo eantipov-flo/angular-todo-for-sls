@@ -61,8 +61,8 @@ export class TodoDataService {
     return this.http.delete<any>(`${this.urlHost}/todos/delete/${idTodo}`);
   }
 
-  public deleteAll(): Observable<string> {
-    return this.http.request<string>('delete', `${this.urlHost}/todos/delete/completed`, { body: this.todoArr });
+  public deleteAll(): Observable<any> {
+    return this.http.request<any>('delete', `${this.urlHost}/todos/delete/completed`, { body: this.todoArr });
   }
 
   public deleteCompleted(): Observable<any> {
