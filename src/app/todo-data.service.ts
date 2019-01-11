@@ -26,8 +26,8 @@ export class TodoDataService {
     this.subjectPagination$ = this.subjectPagination.asObservable();
   }
 
-  public createTodo(task: string): Observable<any> {
-    return this.http.post<any>(`${this.urlHost}/todos/create`, { task: task });
+  public createTodo(task: string): Observable<Todo> {
+    return this.http.post<Todo>(`${this.urlHost}/todos/create`, { task: task });
   }
 
   public getTodo(): void {
@@ -53,7 +53,7 @@ export class TodoDataService {
     return this.http.put<any>(`${this.urlHost}/todos/update`, todoEmit);
   }
 
-  public changeStatus(): Observable<string> {
+  public changeStatus(): Observable<any> {
     return this.http.put<any>(`${this.urlHost}/todos/updateStatus`, this.filterArr());
   }
 
