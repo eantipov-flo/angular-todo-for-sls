@@ -43,17 +43,7 @@ export class TodoDataService {
   }
 
   public changeStatus(): Observable<string> {
-    const arrFilter = this.todoArr.filter(item => item.status === true);
-    const requestArray = this.todoArr;
-    if (arrFilter.length === this.todoArr.length) {
-      requestArray.forEach(item => item.status = false);
-      console.log(requestArray);
-      return this.http.put<any>(`${this.urlHost}/todos/updateStatus`, requestArray);
-    } else {
-      requestArray.forEach(item => item.status = true);
-      console.log(requestArray);
-      return this.http.put<any>(`${this.urlHost}/todos/updateStatus`, requestArray);
-    }
+    return this.http.put<any>(`${this.urlHost}/todos/updateStatus`, this.filterArr());
   }
 
   public deleteSingle(idTodo: number): Observable<string> {
@@ -113,6 +103,17 @@ export class TodoDataService {
         }
       },
     );
+  }
+
+  private filterArr(): Todo[] {
+    const arrFilter = this.todoArr.filter(item => item.status === true);
+    const requestArray = this.todoArr;
+    if (arrFilter.length === this.todoArr.length) {
+      requestArray.forEach(item => item.status = false);
+    } else {
+      requestArray.forEach(item => item.status = true);
+    }
+    return requestArray;
   }
 
 }
