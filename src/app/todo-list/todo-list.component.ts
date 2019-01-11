@@ -51,18 +51,22 @@ export class TodoListComponent implements OnInit, DoCheck {
         this.dataService.todoArr.push(data['todo']);
         this.dataService.subjectArr.next(this.dataService.todoArr);
       },
-      error => this.message = error,
+
+      error => this.message = error.error.errorMessage,
     );
     this.addForm.patchValue({ task: '' });
   }
 
 
   public editTodo(todo: Todo): void {
-    this.dataService.editTodo(todo).subscribe(data => {
-      this.message = data['message'];
-      const indexTodo = this.dataService.todoArr.findIndex(item => item.id === todo.id);
-      this.dataService.todoArr[indexTodo] = todo;
-    });
+    this.dataService.editTodo(todo).subscribe(
+      data => {
+        this.message = data['message'];
+        const indexTodo = this.dataService.todoArr.findIndex(item => item.id === todo.id);
+        this.dataService.todoArr[indexTodo] = todo;
+      },
+      error => this.message = error.error.errorMessage,
+    );
   }
 
   public deleteTodo(id: number): void {
@@ -73,7 +77,7 @@ export class TodoListComponent implements OnInit, DoCheck {
         this.dataService.todoArr.splice(indexTodo, 1);
         this.dataService.subjectArr.next(this.dataService.todoArr);
       },
-      error => this.message = error,
+      error => this.message = error.error.errorMessage,
     );
   }
 
@@ -84,7 +88,7 @@ export class TodoListComponent implements OnInit, DoCheck {
         this.dataService.todoArr = [];
         this.dataService.subjectArr.next(this.dataService.todoArr);
       },
-      error => this.message = error,
+      error => this.message = error.error.errorMessage,
     );
   }
 
@@ -95,7 +99,7 @@ export class TodoListComponent implements OnInit, DoCheck {
         this.dataService.todoArr = data['data'];
         this.dataService.subjectArr.next(this.dataService.todoArr);
       },
-      error => this.message = error,
+      error => this.message = error.error.errorMessage,
     );
   }
 
@@ -106,7 +110,7 @@ export class TodoListComponent implements OnInit, DoCheck {
         this.dataService.todoArr = this.dataService.todoArr.filter(item => item.status === false);
         this.dataService.subjectArr.next(this.dataService.todoArr);
       },
-      error => this.message = error,
+      error => this.message = error.error.errorMessage,
     );
   }
 
