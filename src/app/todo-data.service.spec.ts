@@ -52,7 +52,7 @@ fdescribe('TodoDataService', () => {
 
     todoService.getTodo().subscribe(
       data => expect(data).toEqual(expectedTodoList, 'expected todo'),
-      fail
+      fail,
     );
     expect(httpClientSpy.get.calls.count()).toBe(1, 'one call');
   });
@@ -60,13 +60,13 @@ fdescribe('TodoDataService', () => {
   it('should return an error when the server returns a 404', () => {
     const errorResponse = new HttpErrorResponse({
       error: 'test 404 error',
-      status: 404, statusText: 'Not Found'
+      status: 404, statusText: 'Not Found',
     });
 
     httpClientSpy.get.and.returnValue(asyncError(errorResponse));
     todoService.getTodo().subscribe(
       todo => fail('expected an error, not heroes'),
-      error  => expect(error.status).toEqual(404)
+      error => expect(error.status).toEqual(404),
     );
   });
 });

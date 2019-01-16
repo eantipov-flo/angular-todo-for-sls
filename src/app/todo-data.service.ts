@@ -44,23 +44,23 @@ export class TodoDataService {
 
   public getTodo(): void {
     this.http.get<Todo[]>(`${this.urlHost}/todos/get`).subscribe(data => {
-      this.subjectMessage.next(data['message']);
-      this.todoArr = data['data'];
-      console.log(data['data']);
-      this.todoArr.sort((a, b) => {
-        const millisecondsA = Date.parse(a.createdAt);
-        const millisecondsB = Date.parse(b.createdAt);
-        if (millisecondsA > millisecondsB) {
-          return 1;
-        }
-        if (millisecondsA < millisecondsB) {
-          return -1;
-        }
-        return 0;
-      });
-      this.subjectArr.next(this.todoArr);
-    },
-      error => this.subjectMessage.next(error.error.errorMessage)
+        this.subjectMessage.next(data['message']);
+        this.todoArr = data['data'];
+        console.log(data['data']);
+        this.todoArr.sort((a, b) => {
+          const millisecondsA = Date.parse(a.createdAt);
+          const millisecondsB = Date.parse(b.createdAt);
+          if (millisecondsA > millisecondsB) {
+            return 1;
+          }
+          if (millisecondsA < millisecondsB) {
+            return -1;
+          }
+          return 0;
+        });
+        this.subjectArr.next(this.todoArr);
+      },
+      error => this.subjectMessage.next(error.error.errorMessage),
     );
   }
 
@@ -96,7 +96,8 @@ export class TodoDataService {
         this.subjectArr.next(this.todoArr);
       },
       error => this.subjectMessage.next(error.error.errorMessage),
-    );;
+    );
+    ;
   }
 
   public deleteAll(): void {
