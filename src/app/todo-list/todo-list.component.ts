@@ -21,14 +21,14 @@ export class TodoListComponent implements OnInit, DoCheck {
   currentPage = 1;
 
 
-  todoList$: Observable<Todo[]>;
-  pagination$: Observable<number[]>;
-
-  private message: string;
+  private todoList$: Observable<Todo[]>;
+  private pagination$: Observable<number[]>;
+  private message$: Observable<string>;
 
   constructor(private dataService: TodoDataService) {
     this.todoList$ = this.dataService.subjectArr$;
     this.pagination$ = this.dataService.subjectPagination$;
+    this.message$ = this.dataService.subjectMessage$;
 
   }
 
@@ -45,73 +45,29 @@ export class TodoListComponent implements OnInit, DoCheck {
     if (!this.addForm.value.task.trim()) {
       return;
     }
-    this.dataService.createTodo(this.addForm.value.task).subscribe(
-      data => {
-        this.message = data['message'];
-        this.dataService.todoArr.push(data['todo']);
-        this.dataService.subjectArr.next(this.dataService.todoArr);
-      },
-
-      error => this.message = error.error.errorMessage,
-    );
+    this.dataService.createTodo(this.addForm.value.task);
     this.addForm.patchValue({ task: '' });
   }
 
 
   public editTodo(todo: Todo): void {
-    this.dataService.editTodo(todo).subscribe(
-      data => {
-        this.message = data['message'];
-        const indexTodo = this.dataService.todoArr.findIndex(item => item.id === todo.id);
-        this.dataService.todoArr[indexTodo] = todo;
-      },
-      error => this.message = error.error.errorMessage,
-    );
+    this.dataService.editTodo(todo);
   }
 
   public deleteTodo(id: number): void {
-    this.dataService.deleteSingle(id).subscribe(
-      data => {
-        this.message = data['message'];
-        const indexTodo = this.dataService.todoArr.findIndex(item => item.id === id);
-        this.dataService.todoArr.splice(indexTodo, 1);
-        this.dataService.subjectArr.next(this.dataService.todoArr);
-      },
-      error => this.message = error.error.errorMessage,
-    );
+    this.dataService.deleteSingle(id);
   }
 
   public deleteAll(): void {
-    this.dataService.deleteAll().subscribe(
-      data => {
-        this.message = data['message'];
-        this.dataService.todoArr = [];
-        this.dataService.subjectArr.next(this.dataService.todoArr);
-      },
-      error => this.message = error.error.errorMessage,
-    );
+    this.dataService.deleteAll();
   }
 
   public changeStatus(): void {
-    this.dataService.changeStatus().subscribe(
-      data => {
-        this.message = data['message'];
-        this.dataService.todoArr = data['data'];
-        this.dataService.subjectArr.next(this.dataService.todoArr);
-      },
-      error => this.message = error.error.errorMessage,
-    );
+    this.dataService.changeStatus();
   }
 
   public deleteCompleted(): void {
-    this.dataService.deleteCompleted().subscribe(
-      data => {
-        this.message = data['message'];
-        this.dataService.todoArr = this.dataService.todoArr.filter(item => item.status === false);
-        this.dataService.subjectArr.next(this.dataService.todoArr);
-      },
-      error => this.message = error.error.errorMessage,
-    );
+    this.dataService.deleteCompleted();
   }
 
   public showList(currentList: number = this.currentList, currentPage: number = this.currentPage) {

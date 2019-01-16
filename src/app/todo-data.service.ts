@@ -16,58 +16,110 @@ export class TodoDataService {
 
   public subjectPagination = new Subject<number[]>();
   public subjectPagination$: Observable<number[]>;
+
+  public subjectMessage = new Subject<string>();
+  public subjectMessage$: Observable<string>;
+
   private todosOnPage = 7;
   private urlHost = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {
 
-
     this.subjectArr$ = this.subjectArr.asObservable();
     this.subjectPagination$ = this.subjectPagination.asObservable();
+    this.subjectMessage$ = this.subjectMessage.asObservable();
   }
 
-  public createTodo(task: string): Observable<Todo> {
-    return this.http.post<Todo>(`${this.urlHost}/todos/create`, { task: task });
+  public createTodo(task: string): void {
+    this.http.post<Todo>(`${this.urlHost}/todos/create`, { task: task }).subscribe(
+      data => {
+        this.subjectMessage.next(data['message']);
+        this.todoArr.push(data['todo']);
+        this.subjectArr.next(this.todoArr);
+      },
+
+      error => this.subjectMessage.next(error.error.errorMessage),
+    );
   }
 
   public getTodo(): void {
-    this.http.get<Todo[]>(`${this.urlHost}/todos/get`)
-      .subscribe(data => {
-        this.todoArr = data;
-        this.todoArr.sort((a, b) => {
-          const millisecondsA = Date.parse(a.createdAt);
-          const millisecondsB = Date.parse(b.createdAt);
-          if (millisecondsA > millisecondsB) {
-            return 1;
-          }
-          if (millisecondsA < millisecondsB) {
-            return -1;
-          }
-          return 0;
-        });
-        this.subjectArr.next(this.todoArr);
+    this.http.get<Todo[]>(`${this.urlHost}/todos/get`).subscribe(data => {
+      this.subjectMessage.next(data['message']);
+      this.todoArr = data['data'];
+      console.log(data['data']);
+      this.todoArr.sort((a, b) => {
+        const millisecondsA = Date.parse(a.createdAt);
+        const millisecondsB = Date.parse(b.createdAt);
+        if (millisecondsA > millisecondsB) {
+          return 1;
+        }
+        if (millisecondsA < millisecondsB) {
+          return -1;
+        }
+        return 0;
       });
+      this.subjectArr.next(this.todoArr);
+    },
+      error => this.subjectMessage.next(error.error.errorMessage)
+    );
   }
 
-  public editTodo(todoEmit: Todo): Observable<any> {
-    return this.http.put<any>(`${this.urlHost}/todos/update`, todoEmit);
+  public editTodo(todoEmit: Todo): void {
+    this.http.put<any>(`${this.urlHost}/todos/update`, todoEmit).subscribe(
+      data => {
+        this.subjectMessage.next(data['message']);
+        const indexTodo = this.todoArr.findIndex(item => item.id === todoEmit.id);
+        this.todoArr[indexTodo] = todoEmit;
+        this.subjectArr.next(this.todoArr);
+      },
+      error => this.subjectMessage.next(error.error.errorMessage),
+    );
   }
 
-  public changeStatus(): Observable<any> {
-    return this.http.put<any>(`${this.urlHost}/todos/updateStatus`, this.filterArr());
+  public changeStatus(): void {
+    this.http.put<any>(`${this.urlHost}/todos/updateStatus`, this.filterArr()).subscribe(
+      data => {
+        this.subjectMessage.next(data['message']);
+        this.todoArr = data['data'];
+        this.subjectArr.next(this.todoArr);
+      },
+      error => this.subjectMessage.next(error.error.errorMessage),
+    );
   }
 
-  public deleteSingle(idTodo: number): Observable<any> {
-    return this.http.delete<any>(`${this.urlHost}/todos/delete/${idTodo}`);
+  public deleteSingle(idTodo: number): void {
+    this.http.delete<any>(`${this.urlHost}/todos/delete/${idTodo}`).subscribe(
+      data => {
+        this.subjectMessage.next(data['message']);
+        const indexTodo = this.todoArr.findIndex(item => item.id === idTodo);
+        this.todoArr.splice(indexTodo, 1);
+        this.subjectArr.next(this.todoArr);
+      },
+      error => this.subjectMessage.next(error.error.errorMessage),
+    );;
   }
 
-  public deleteAll(): Observable<any> {
-    return this.http.request<any>('delete', `${this.urlHost}/todos/delete/completed`, { body: this.todoArr });
+  public deleteAll(): void {
+    this.http.request<any>('delete', `${this.urlHost}/todos/delete/completed`, { body: this.todoArr }).subscribe(
+      data => {
+        this.subjectMessage.next(data['message']);
+        this.todoArr = [];
+        this.subjectArr.next(this.todoArr);
+      },
+      error => this.subjectMessage.next(error.error.errorMessage),
+    );
   }
 
-  public deleteCompleted(): Observable<any> {
+  public deleteCompleted(): void {
     const requestArray = this.todoArr.filter(item => item.status === true);
-    return this.http.request<any>('delete', `${this.urlHost}/todos/delete/completed`, { body: requestArray });
+    this.http.request<any>('delete', `${this.urlHost}/todos/delete/completed`, { body: requestArray }).subscribe(
+      data => {
+        this.subjectMessage.next(data['message']);
+        this.todoArr = this.todoArr.filter(item => item.status === false);
+        this.subjectArr.next(this.todoArr);
+      },
+      error => this.subjectMessage.next(error.error.errorMessage),
+    );
   }
 
   public showList(currentList: number, currentPage: number): void {
