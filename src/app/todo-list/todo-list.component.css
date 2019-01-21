@@ -1,4 +1,4 @@
-.mat-button-toggle-label-content .pagButtons {
+.mat-button-toggle-label-content .show-page {
   line-height: 36px;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .add-button {
-  position: absolute;
+  /*position: absolute;*/
   right: 38.5%;
   top: 81px;
   border: none;

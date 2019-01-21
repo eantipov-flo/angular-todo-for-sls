@@ -3,7 +3,4 @@ export class Todo {
   task: string;
   status: boolean;
   createdAt: string;
-
-  constructor() {
-  }
 }

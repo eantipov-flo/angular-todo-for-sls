@@ -11,7 +11,7 @@ export class TodoComponent implements OnInit, AfterViewChecked {
 
   @Input() todo: Todo;
   @Output() editTodo = new EventEmitter<Todo>();
-  @Output() deleteTodo = new EventEmitter<number>();
+  @Output() deleteTodo = new EventEmitter<string>();
   @ViewChild('editInput') editInput: ElementRef;
 
   private displayEdit = true;
@@ -33,7 +33,7 @@ export class TodoComponent implements OnInit, AfterViewChecked {
     this.editTodo.emit(this.todo);
   }
 
-  public delTodo(id: number): void {
+  public delTodo(id: string): void {
     this.deleteTodo.emit(id);
   }
 
@@ -42,10 +42,12 @@ export class TodoComponent implements OnInit, AfterViewChecked {
   }
 
   public editTaskTodo(edit: boolean, newTask?: string): void {
-    if (edit && newTask !== '') {
-      this.todo.task = newTask;
+    if (newTask === '') {
+      this.displayEdit = edit;
+      return;
     }
-    this.displayEdit = edit;
+    this.todo.task = newTask;
     this.editTodo.emit(this.todo);
+    this.displayEdit = edit;
   }
 }

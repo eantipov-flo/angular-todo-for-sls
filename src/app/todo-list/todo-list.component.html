@@ -8,18 +8,20 @@
   <button mat-stroked-button color="warn" (click)="deleteCompleted()">Delete completed</button>
 </div>
 <mat-button-toggle-group>
-  <mat-button-toggle (change)="showList(1)">All Todos</mat-button-toggle>
-  <mat-button-toggle (change)="showList(2)">Active Todos</mat-button-toggle>
-  <mat-button-toggle (change)="showList(3)">Completed Todos</mat-button-toggle>
+  <mat-button-toggle class="show-list" (change)="showList(1)">All Todos</mat-button-toggle>
+  <mat-button-toggle class="show-list" (change)="showList(2)">Active Todos</mat-button-toggle>
+  <mat-button-toggle class="show-list" (change)="showList(3)">Completed Todos</mat-button-toggle>
 </mat-button-toggle-group>
 <app-todo *ngFor="let todo of todoList$ | async" [todo]="todo" (editTodo)="editTodo($event)"
           (deleteTodo)="deleteTodo($event)"></app-todo>
 <p>
   <mat-button-toggle-group>
-    <mat-button-toggle class="pagButtons" *ngFor="let numb of pagination$ | async; let i = index"
+    <mat-button-toggle class="show-page" *ngFor="let numb of pagination$ | async; let i = index"
                        (click)="showList(undefined, i + 1)">
       {{i+1}}
     </mat-button-toggle>
   </mat-button-toggle-group>
 </p>
-<div>{{message$ | async}}</div>
+<div>
+  <span class="message-async">{{resMessage$ | async}}</span>
+</div>
