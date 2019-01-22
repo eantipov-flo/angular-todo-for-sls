@@ -7,14 +7,13 @@
 }
 
 .add-input {
-  width: 354px;
+  width: 333px;
   font-size: 1.3em;
   font-family: "Trebuchet MS", "Lucida Sans";
   outline: none;
 }
 
 .add-button {
-  /*position: absolute;*/
   right: 38.5%;
   top: 81px;
   border: none;

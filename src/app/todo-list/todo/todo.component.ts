@@ -42,7 +42,7 @@ export class TodoComponent implements OnInit, AfterViewChecked {
   }
 
   public editTaskTodo(edit: boolean, newTask?: string): void {
-    if (newTask === '') {
+    if (newTask === '' || newTask === this.todo.task) {
       this.displayEdit = edit;
       return;
     }
