@@ -20,13 +20,13 @@ export class TodoDataService {
   public todosOnPage = 5;
 
 
-  public urlHost = 'http://localhost:3000';
+  public reqUrl = 'https://cq1jfjwfae.execute-api.us-east-1.amazonaws.com/dev';
 
   constructor(private http: HttpClient) {
   }
 
   public getTodo(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(`${this.urlHost}/todos/get`)
+    return this.http.get<Todo[]>(`${this.reqUrl}/todos/get`)
       .pipe(
         tap((data) => {
           this.todoArray = data['data'];
@@ -37,7 +37,7 @@ export class TodoDataService {
   }
 
   public createTodo(task: string): Observable<Todo> {
-    return this.http.post<Todo>(`${this.urlHost}/todos/create`, { task: task })
+    return this.http.post<Todo>(`${this.reqUrl}/todos/create`, { task: task })
       .pipe(
         tap((data) => {
           this.todoArray.push(data['todo']);
@@ -47,7 +47,7 @@ export class TodoDataService {
   }
 
   public editTodo(todo: Todo): Observable<any> {
-    return this.http.put<any>(`${this.urlHost}/todos/update`, todo)
+    return this.http.put<any>(`${this.reqUrl}/todos/update`, todo)
       .pipe(
         tap(() => {
           const indexTodo = this.todoArray.findIndex(item => item.id === todo.id);
@@ -58,7 +58,7 @@ export class TodoDataService {
   }
 
   public changeStatus(): Observable<any> {
-    return this.http.put<any>(`${this.urlHost}/todos/updateStatus`, this.filterArr())
+    return this.http.put<any>(`${this.reqUrl}/todos/updateStatus`, this.filterArr())
       .pipe(
         tap((data) => {
           this.todoArray = data['data'];
@@ -68,7 +68,7 @@ export class TodoDataService {
   }
 
   public deleteSingle(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.urlHost}/todos/delete/${id}`)
+    return this.http.delete<any>(`${this.reqUrl}/todos/delete/${id}`)
       .pipe(
         tap(() => {
           const indexTodo = this.todoArray.findIndex(item => item.id === id);
@@ -80,7 +80,7 @@ export class TodoDataService {
 
   public deleteCompleted(): Observable<any> {
     const requestArray = this.todoArray.filter(item => item.status === true);
-    return this.http.request<any>('delete', `${this.urlHost}/todos/delete/completed`, { body: requestArray })
+    return this.http.request<any>('delete', `${this.reqUrl}/todos/delete/completed`, { body: requestArray })
       .pipe(
         tap(() => {
           this.todoArray = this.todoArray.filter(item => item.status === false);
@@ -90,7 +90,7 @@ export class TodoDataService {
   }
 
   public deleteAll(): Observable<any> {
-    return this.http.request<any>('delete', `${this.urlHost}/todos/delete/all`, { body: this.todoArray }).pipe(
+    return this.http.request<any>('delete', `${this.reqUrl}/todos/delete/all`, { body: this.todoArray }).pipe(
       tap(() => {
         this.todoArray = [];
         this.showList();

@@ -57,7 +57,7 @@ describe('TodoDataService', () => {
       todoService.todoArray = [];
       expect(todoService.todoArray).toEqual([], 'todoArray must be empty');
       todoService.getTodo().subscribe();
-      const req = httpTestingController.expectOne(`${todoService.urlHost}/todos/get`);
+      const req = httpTestingController.expectOne(`${todoService.reqUrl}/todos/get`);
       expect(req.request.method).toEqual('GET', 'Request method');
       req.flush({ data: testArray });
       expect(todoService.todoArray).toEqual(testArray, 'Compare local array with test array');
@@ -65,7 +65,7 @@ describe('TodoDataService', () => {
 
     it('Test with empty todo array', () => {
       todoService.getTodo().subscribe();
-      const req = httpTestingController.expectOne(`${todoService.urlHost}/todos/get`);
+      const req = httpTestingController.expectOne(`${todoService.reqUrl}/todos/get`);
       req.flush({ data: [] });
       expect(todoService.todoArray).toEqual([], 'Length empty array');
     });
@@ -88,7 +88,7 @@ describe('TodoDataService', () => {
       };
       const expectedLength = todoService.todoArray.length + 1;
       todoService.createTodo(newTodo.task).subscribe();
-      const req = httpTestingController.expectOne(`${todoService.urlHost}/todos/create`);
+      const req = httpTestingController.expectOne(`${todoService.reqUrl}/todos/create`);
       expect(req.request.method).toEqual('POST', 'Request method');
       req.flush({ todo: newTodo });
       expect(todoService.todoArray.length).toEqual(expectedLength, 'Compare arrays length');
@@ -106,7 +106,7 @@ describe('TodoDataService', () => {
       };
       const expectedLength = todoService.todoArray.length;
       todoService.editTodo(updateTodo).subscribe();
-      const req = httpTestingController.expectOne(`${todoService.urlHost}/todos/update`);
+      const req = httpTestingController.expectOne(`${todoService.reqUrl}/todos/update`);
       expect(req.request.method).toEqual('PUT', 'Request method');
       req.flush({ data: updateTodo });
       expect(todoService.todoArray[0]).toEqual(updateTodo, 'Compare updated Todo with Todo update data');
@@ -119,7 +119,7 @@ describe('TodoDataService', () => {
       const expectedList = JSON.parse(JSON.stringify(testArray));
       expectedList.map(item => item.status = true);
       todoService.changeStatus().subscribe();
-      const req = httpTestingController.expectOne(`${todoService.urlHost}/todos/updateStatus`);
+      const req = httpTestingController.expectOne(`${todoService.reqUrl}/todos/updateStatus`);
       expect(req.request.method).toEqual('PUT', 'Request method');
       req.flush({ data: expectedList });
       expect(todoService.todoArray).toEqual(expectedList, 'Compare arrays after request(must be all TRUE)');
@@ -129,7 +129,7 @@ describe('TodoDataService', () => {
       expectedList.map(item => item.status = false);
       todoService.todoArray.map(item => item.status = true);
       todoService.changeStatus().subscribe();
-      const req = httpTestingController.expectOne(`${todoService.urlHost}/todos/updateStatus`);
+      const req = httpTestingController.expectOne(`${todoService.reqUrl}/todos/updateStatus`);
       expect(req.request.method).toEqual('PUT', 'Request method');
       req.flush({ data: expectedList });
       expect(todoService.todoArray).toEqual(expectedList, 'Compare arrays after request(must be all FALSE)');
@@ -140,7 +140,7 @@ describe('TodoDataService', () => {
       const deletedTodo = todoService.todoArray[0];
       const expectedLength = todoService.todoArray.length;
       todoService.deleteSingle('1').subscribe();
-      const req = httpTestingController.expectOne(`${todoService.urlHost}/todos/delete/1`);
+      const req = httpTestingController.expectOne(`${todoService.reqUrl}/todos/delete/1`);
       expect(req.request.method).toEqual('DELETE');
       req.flush({});
       expect(todoService.todoArray[0]).not.toEqual(deletedTodo, 'Compare array elements with 0 index');
@@ -174,7 +174,7 @@ describe('TodoDataService', () => {
       todoService.todoArray.push(arrayTestTrue[0], arrayTestTrue[1], arrayTestTrue[2]);
       expect(todoService.todoArray.length).toEqual(6, 'Length todo array');
       todoService.deleteCompleted().subscribe();
-      const reqFalse = httpTestingController.expectOne(`${todoService.urlHost}/todos/delete/completed`);
+      const reqFalse = httpTestingController.expectOne(`${todoService.reqUrl}/todos/delete/completed`);
       expect(reqFalse.request.method).toEqual('DELETE');
       reqFalse.flush({});
       expect(todoService.todoArray).toEqual(expectedList, 'Compare arr length');
@@ -185,7 +185,7 @@ describe('TodoDataService', () => {
     it('Request delete completed todo', () => {
       expect(todoService.todoArray.length).toBe(3, 'Length');
       todoService.deleteAll().subscribe();
-      const reqFalse = httpTestingController.expectOne(`${todoService.urlHost}/todos/delete/all`);
+      const reqFalse = httpTestingController.expectOne(`${todoService.reqUrl}/todos/delete/all`);
       expect(reqFalse.request.method).toEqual('DELETE');
       reqFalse.flush({});
       expect(todoService.todoArray).toEqual([], 'Compare arr length');
